@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://d0mti67vjowem"]
+
+[ext_resource type="Script" path="res://node_3d.gd" id="1_54oby"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pup64"]
+
+[sub_resource type="Sky" id="Sky_flibh"]
+sky_material = SubResource("ProceduralSkyMaterial_pup64")
+
+[sub_resource type="Environment" id="Environment_ihome"]
+background_mode = 2
+sky = SubResource("Sky_flibh")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ga5x5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o78ts"]
+albedo_color = Color(0.233925, 0.233925, 0.233925, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_862tg"]
+material = SubResource("StandardMaterial3D_o78ts")
+size = Vector2(32, 32)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_blgle"]
+data = PackedVector3Array(16, 0, 16, -16, 0, 16, 16, 0, -16, -16, 0, 16, -16, 0, -16, 16, 0, -16)
+
+[node name="NavigationSystem" type="Node3D"]
+script = ExtResource("1_54oby")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ihome")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.435074, 0.900395, 0, -0.900395, 0.435074, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0111, 0.999938, 0, -0.999938, 0.0111, 0, 44.2284, 0)
+
+[node name="Agent" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ga5x5")
+
+[node name="floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_862tg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_blgle")
